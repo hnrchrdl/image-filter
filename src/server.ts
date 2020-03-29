@@ -20,7 +20,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
     if(!image_url) {
       // send bad request if image_url is missing
-      res.statusCode = 400;
+      res.statusCode = 422;
       res.send("image_url query param must be present.");
       return;
     }
