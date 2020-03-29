@@ -16,19 +16,22 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   // Transform image endpoint
   // takes an image url and sends back a transfored version of that image.
   app.get('/filteredimage', async (req: express.Request, res: express.Response) => {
-    const { image_url } = req.query;
+    const { image_url }: { image_url: string } = req.query;
+
     if(!image_url) {
       // send bad request if image_url is missing
       res.statusCode = 400;
       res.send("image_url query param must be present.");
+      return;
     }
+
     // transform image
     let filepath: string;
     try {
       filepath = await filterImageFromURL(image_url);  
     }
     catch(err) {
-      const { filepath, message} = err;
+      const { filepath, message}: { filepath: string, message: string } = err;
       res.statusCode = 500;
       res.send(`sorry, something went wrong. reason: ${message}`);
       if(filepath) deleteLocalFiles([filepath]);
